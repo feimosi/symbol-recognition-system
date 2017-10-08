@@ -1,0 +1,17 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "DEBUG",
+                "program": "${workspaceRoot}\\src\\index.ts",
+                "outFiles": [
+                    "${workspaceRoot}/out/**/*.js"
+                ],
+                "sourceMaps": true,
+                "protocol": "inspector",
+                "preLaunchTask": "compile"
+            }
+        ]
+    }
