@@ -1,0 +1,27 @@
+{
+  "name": "neural-network",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./src/index.ts",
+  "scripts": {
+    "start": "npm run build:live",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/feimosi/neural-network.git"
+  },
+  "author": "feimosi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/feimosi/neural-network/issues"
+  },
+  "homepage": "https://github.com/feimosi/neural-network",
+  "devDependencies": {
+    "@types/node": "^8.0.33",
+    "nodemon": "^1.12.1",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.5.3"
+  }
+}
