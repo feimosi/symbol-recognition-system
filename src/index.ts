@@ -1,3 +1,3 @@
-var x = 5;
+var x : number = 5;
 
 console.log('Hello TypeScript');
