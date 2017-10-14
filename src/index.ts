@@ -1,4 +1,5 @@
 import { Neuron, Layer } from "synaptic";
+import './utils';
 
 var x : number = 5;
 console.log('Hello TypeScript');
