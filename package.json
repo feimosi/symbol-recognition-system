@@ -20,8 +20,12 @@
   "homepage": "https://github.com/feimosi/neural-network",
   "devDependencies": {
     "@types/node": "^8.0.33",
+    "@types/synaptic": "^1.0.3",
     "nodemon": "^1.12.1",
     "ts-node": "^3.3.0",
     "typescript": "^2.5.3"
+  },
+  "dependencies": {
+    "synaptic": "^1.1.3"
   }
 }
