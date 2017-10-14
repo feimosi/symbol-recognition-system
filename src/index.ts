@@ -1,8 +1,10 @@
 import { Neuron, Layer } from "synaptic";
-import './utils';
+import { Utils } from './utils';
 
-var x : number = 5;
+var x: number = 5;
 console.log('Hello TypeScript');
 
-var neuron : Neuron  = new Neuron();
+var neuron: Neuron = new Neuron();
 const layer: Layer = new Layer(3);
+
+Utils.readFiles();

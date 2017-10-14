@@ -1,21 +1,28 @@
-import * as path from 'path';
-import * as fs from 'fs';
-import * as hog from 'hog-features';
-const { Image } = require('image-js');
+import * as Path from 'path';
+import * as FileSource from 'fs';
+import * as Hog from 'hog-features';
+import { Image } from 'image-js';
 
-const DATA_PATH = '../data/training/Signs/Big/A/';
+const DATA_PATH = '../data/tests/';
 
-fs.readdir(path.resolve(__dirname, DATA_PATH), (err, list) => {
-    for(let fileName of list) {
-        extractFeature(path.resolve(__dirname, DATA_PATH, fileName));
-        break;
+/** Constains all application utilities */
+export module Utils {
+    /** Reads files form directory */
+    export async function readFiles() : Promise<void> {
+        FileSource.readdir(Path.resolve(__dirname, DATA_PATH), async (err: NodeJS.ErrnoException, list: string[]) => {
+            for (let fileName of list) {
+                var prom = await extractFeature(Path.resolve(__dirname, DATA_PATH, fileName));
+                break;
+            }
+        });
     }
-});
 
-function extractFeature(fileName: string) {
-    let data = 0;
-    Image.load(fileName).then(function (image) {
-        var descriptor = hog.extractHOG(image);
-        console.log(descriptor);
-    });
-}
+    /** Extracts features from file with given name. */
+    function extractFeature(fileName: string) : Promise<number[]> {
+        return Image.load(fileName).then(function (image) {
+            var descriptor = Hog.extractHOG(image);
+            console.log(descriptor);
+            return descriptor;
+        });
+    }
+};
