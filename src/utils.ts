@@ -7,20 +7,29 @@ const DATA_PATH = '../data/tests/';
 
 /** Constains all application utilities */
 export module Utils {
+
+    /** Hog descriptor parameters */
+    const hogParams : object = {
+        cellSize: 50,    // length of cell in px
+        blockSize: 10,   // length of block in number of cells
+        blockStride: 20, // number of cells to slide block window by (block overlap)
+        bins: 6,        // bins per histogram
+        norm: 'L2'      // block normalization method
+    };
+
     /** Reads files form directory */
-    export async function readFiles() : Promise<void> {
+    export function readFiles(): void {
         FileSource.readdir(Path.resolve(__dirname, DATA_PATH), async (err: NodeJS.ErrnoException, list: string[]) => {
             for (let fileName of list) {
                 var prom = await extractFeature(Path.resolve(__dirname, DATA_PATH, fileName));
-                break;
             }
         });
     }
 
     /** Extracts features from file with given name. */
-    function extractFeature(fileName: string) : Promise<number[]> {
+    function extractFeature(fileName: string): Promise<number[]> {
         return Image.load(fileName).then(function (image) {
-            var descriptor = Hog.extractHOG(image);
+            var descriptor = Hog.extractHOG(image, hogParams);
             console.log(descriptor);
             return descriptor;
         });
