@@ -1,4 +1,4 @@
-import { Image } from "image-js";
+import { Image, crop } from "image-js";
 import * as FileSource from "fs";
 import * as Hog from "hog-features";
 import * as Path from "path";
@@ -17,7 +17,7 @@ const hogParams = {
 
 /** Extracts features from file with given name. */
 function extractFeature(fileName: string): Promise<number[]> {
-    return Image.load(fileName).then((image: Image): number[] => {
+    return Image.load(fileName).then((image): number[] => {
         const descriptor: number[] = Hog.extractHOG(image, hogParams);
         return descriptor;
     });
@@ -27,7 +27,7 @@ function extractFeature(fileName: string): Promise<number[]> {
 export const Utils = {
 
     /** Reads files form directory */
-    async readFiles(): Promise<number[][]> {
+    readFiles(): Promise<number[][]> {
         return new Promise<number[][]>((resolve, reject) => {
             const tasks: Array<Promise<number[]>> = [];
             FileSource.readdir(Path.resolve(__dirname, DATA_PATH), async (err: NodeJS.ErrnoException, list: string[]) => {

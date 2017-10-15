@@ -1,6 +1,8 @@
 import { Utils } from "./utils";
 
-Utils.readFiles().then((tables: number[][]) => {
-    console.log(tables);
+async function main(): Promise<void> {
+    console.log(await Utils.readFiles());
     console.log("end");
-});
+}
+
+main();
