@@ -3,9 +3,6 @@ import * as FileSource from "fs";
 import * as Hog from "hog-features";
 import * as Path from "path";
 
-/** Files directory path */
-const DATA_PATH: string = "../data/training/Signs/Big/A/";
-
 /** Hog descriptor parameters */
 const hogParams = {
     bins: 6,        // bins per histogram
@@ -27,15 +24,28 @@ function extractFeature(fileName: string): Promise<number[]> {
 export const Utils = {
 
     /** Reads files form directory */
-    readFiles(): Promise<number[][]> {
-        return new Promise<number[][]>((resolve, reject) => {
-            const tasks: Array<Promise<number[]>> = [];
-            FileSource.readdir(Path.resolve(__dirname, DATA_PATH), async (err: NodeJS.ErrnoException, list: string[]) => {
-                for (const fileName of list) {
-                    tasks.push(extractFeature(Path.resolve(__dirname, DATA_PATH, fileName)));
-                }
-                resolve(await Promise.all(tasks));
-            });
-        });
+    async readAndExtractFeatures(absoluteFilesPaths: string[]): Promise<number[][]> {
+        const tasks: Array<Promise<number[]>> = [];
+        for (const fileName of absoluteFilesPaths) {
+            tasks.push(extractFeature(fileName));
+        }
+        return await Promise.all(tasks);
+    },
+
+    /** Read all files recursivly form directory */
+    getFilesPaths(directoryPath: string, subDirectory?: string): string[] {
+        const resolvedPath: string = Path.resolve(__dirname, directoryPath, !subDirectory ? "" : subDirectory);
+        let paths: string[] = new Array<string>();
+
+        if (FileSource.statSync(resolvedPath).isDirectory()) {
+            const list: string[] = FileSource.readdirSync(resolvedPath);
+            for (const fileName of list) {
+                paths = paths.concat(this.getFilesPaths(resolvedPath, fileName));
+            }
+        } else {
+            paths.push(resolvedPath);
+        }
+
+        return paths;
     }
 };

@@ -9,7 +9,9 @@
         "ordered-imports": false,
         "member-ordering": false,
         "trailing-comma": false,
-        "max-line-length": false
+        "max-line-length": false,
+        "align": false,
+        "no-trailing-whitespace": false
     },
     "rulesDirectory": []
 }
