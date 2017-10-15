@@ -1,4 +1,6 @@
 import { Utils } from "./utils";
 
-Utils.readFiles();
-console.log("end");
+Utils.readFiles().then((tables: number[][]) => {
+    console.log(tables);
+    console.log("end");
+});

@@ -27,12 +27,15 @@ function extractFeature(fileName: string): Promise<number[]> {
 export const Utils = {
 
     /** Reads files form directory */
-    readFiles(): void {
-        FileSource.readdir(Path.resolve(__dirname, DATA_PATH), async (err: NodeJS.ErrnoException, list: string[]) => {
-            for (const fileName of list) {
-                const imageFeaturesVector: number[] = await extractFeature(Path.resolve(__dirname, DATA_PATH, fileName));
-                console.log(imageFeaturesVector);
-            }
+    async readFiles(): Promise<number[][]> {
+        return new Promise<number[][]>((resolve, reject) => {
+            const tasks: Array<Promise<number[]>> = [];
+            FileSource.readdir(Path.resolve(__dirname, DATA_PATH), async (err: NodeJS.ErrnoException, list: string[]) => {
+                for (const fileName of list) {
+                    tasks.push(extractFeature(Path.resolve(__dirname, DATA_PATH, fileName)));
+                }
+                resolve(await Promise.all(tasks));
+            });
         });
     }
 };
