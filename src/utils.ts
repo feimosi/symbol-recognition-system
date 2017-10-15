@@ -4,7 +4,7 @@ import * as Hog from "hog-features";
 import * as Path from "path";
 
 /** Files directory path */
-const DATA_PATH: string = "../data/tests/";
+const DATA_PATH: string = "../data/training/Signs/Big/A/";
 
 /** Hog descriptor parameters */
 const hogParams = {
