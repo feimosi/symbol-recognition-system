@@ -1,7 +1,7 @@
 {
   "name": "neural-network",
   "version": "0.0.1",
-  "description": "",
+  "description": "test",
   "main": "./src/index.ts",
   "scripts": {
     "start": "npm run build:live",
