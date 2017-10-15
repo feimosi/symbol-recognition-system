@@ -19,7 +19,6 @@ const hogParams = {
 function extractFeature(fileName: string): Promise<number[]> {
     return Image.load(fileName).then((image: Image): number[] => {
         const descriptor: number[] = Hog.extractHOG(image, hogParams);
-        console.log(descriptor);
         return descriptor;
     });
 }
@@ -31,7 +30,8 @@ export const Utils = {
     readFiles(): void {
         FileSource.readdir(Path.resolve(__dirname, DATA_PATH), async (err: NodeJS.ErrnoException, list: string[]) => {
             for (const fileName of list) {
-                const prom: number[] = await extractFeature(Path.resolve(__dirname, DATA_PATH, fileName));
+                const imageFeaturesVector: number[] = await extractFeature(Path.resolve(__dirname, DATA_PATH, fileName));
+                console.log(imageFeaturesVector);
             }
         });
     }
