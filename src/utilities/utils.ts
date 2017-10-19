@@ -1,6 +1,4 @@
-import { Image } from "image-js";
 import * as FileSource from "fs";
-
 import * as Path from "path";
 import * as System from "os";
 
@@ -24,5 +22,14 @@ export const Utils = {
         }
 
         return paths;
+    },
+
+    /** Returns the folder name of the file */
+    getCatalogName(fileName: string): string {
+        if (FileSource.statSync(fileName).isFile()) {
+            const directoryArray: string[] = Path.dirname(fileName).split("\\");
+            return directoryArray[directoryArray.length - 1];
+        }
+        return "";
     }
 };

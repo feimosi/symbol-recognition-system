@@ -1,4 +1,6 @@
+import { ImageFeatures } from "./../data-models/image-features";
 import { Image } from "image-js";
+import { Utils } from "../utilities/utils";
 import * as Hog from "hog-features";
 
 /** Hog descriptor parameters */
@@ -23,13 +25,15 @@ async function loadImageSync(fileName: string): Promise<Image> {
 export const HogExtractorService = {
 
     /** Loads imate to memory and extracts features from it */
-    async loadAndExtractFeatures(files: string[]): Promise<number[][]> {
-        const tasks: Array<Promise<number[]>> = [];
+    async loadAndExtractFeatures(files: string[]): Promise<ImageFeatures[]> {
+        const tasks: Array<Promise<ImageFeatures>> = [];
 
         for (const fileName of files) {
-            const task = new Promise<number[]>(async (resolve, reject) => {
-                const image = await loadImageSync(fileName);
-                resolve(extractFeature(image));
+            const task = new Promise<ImageFeatures>(async (resolve, reject) => {
+                const catalogName: string = Utils.getCatalogName(fileName);
+                const features: number[] = extractFeature(await loadImageSync(fileName));
+                const imageFeatures: ImageFeatures = new ImageFeatures(features, catalogName.charCodeAt(0), catalogName);
+                resolve(imageFeatures);
             });
             tasks.push(task);
         }
