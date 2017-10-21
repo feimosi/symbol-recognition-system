@@ -2,11 +2,12 @@ import { Logger } from "./../utilities/logger";
 import { ImageFeatures } from "./../data-models/image-features";
 import { HogParameters } from "../data-models/hog-parameters";
 import { Utils } from "../utilities/utils";
+import { IFeatureExtractor } from "./ifeature-extractor";
 import { Image } from "image-js";
 import * as Hog from "hog-features";
 
 /** Hog extractor */
-export class HogExtractorService {
+export class HogExtractorService implements IFeatureExtractor {
 
     /** Hog descriptor parameters */
     private hogParams: HogParameters;
