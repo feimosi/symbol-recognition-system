@@ -1,7 +1,7 @@
+import * as sharp from "sharp";
 import { IFeatureExtractor } from "./ifeature-extractor";
 import { ImageFeatures } from "../data-models/image-features";
 import { SharpInstance, OutputInfo, Region } from "sharp";
-import * as sharp from "sharp";
 import { Logger } from "../utilities/logger";
 import { Utils } from "../utilities/utils";
 
