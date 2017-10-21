@@ -1,11 +1,13 @@
-import { Network, Architect, Trainer } from "synaptic";
+import { Network, Architect } from "synaptic";
+import { ImageFeatures } from "../data-models/image-features";
 
 export class ClassificationService {
     private network: Network;
 
-    public constructor() {
-        this.network = new Architect.Perceptron(600, 200, 60, 25);
-        const trainer: Trainer = new Trainer(this.network);
-        // this.network.activate()
+    public constructor(images: ImageFeatures[]) {
+        this.network = new Architect.Perceptron(1024, 200, 60, 25);
+        console.log(this.network.activate(images[0].features));
+        console.log(this.network.propagate(0.3, [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+        console.log(this.network.activate(images[0].features));
     }
 }
