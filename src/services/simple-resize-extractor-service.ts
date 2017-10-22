@@ -1,24 +1,41 @@
+import { CoreImage } from "./../data-models/core-image";
 import * as sharp from "sharp";
-import { IFeatureExtractor } from "./ifeature-extractor";
-import { ImageFeatures } from "../data-models/image-features";
 import { SharpInstance, OutputInfo, Region } from "sharp";
 import { Logger } from "../utilities/logger";
 import { Utils } from "../utilities/utils";
 
-export class SimpleResizeExtractorService implements IFeatureExtractor {
+export class SimpleImageResizer {
 
-    public async loadAndExtractFeatures(files: string[]): Promise<ImageFeatures[]> {
-        const result: ImageFeatures[] = [];
-        for (const file of files) {
-            const catalogName: string = Utils.getCatalogName(file);
+    private readonly resizedImagesPath: string;
+    private resizedWidth: number = 32;
+    private resizedHeight: number = 32;
 
-            const image: SharpInstance = await this.loadImage(file);
-            const imageFeatures: ImageFeatures = new ImageFeatures(await this.extractFeatures(image), catalogName.charCodeAt(0), catalogName);
+    public constructor(resizedImagesPath: string) {
+        this.resizedImagesPath = resizedImagesPath;
+    }
 
-            result.push(imageFeatures);
-            Logger.log(`${file} - file converted to features. ${Math.round(((files.indexOf(file) + 1) / files.length) * 10000) / 100}% finished`);
+    public async loadAndResizeImages(files: string[]): Promise<CoreImage[]> {
+        let result: CoreImage[] = [];
+
+        if (Utils.fileExists(this.resizedImagesPath)) {
+            result = Utils.loadFromFile(this.resizedImagesPath);
+        } else {
+            for (const file of files) {
+                result.push(await this.loadAndResizeImage(file));
+                Logger.log(`${file} - file converted to features. ${Math.round(((files.indexOf(file) + 1) / files.length) * 10000) / 100}% finished`);
+            }
         }
+
         return result;
+    }
+
+    public async loadAndResizeImage(file: string): Promise<CoreImage> {
+        const catalogName: string = Utils.getCatalogName(file);
+        const image: SharpInstance = await this.loadImage(file);
+        const grid: number[][] = this.toTwoDemenstionalArray(await (await this.transformImage(image)).toBuffer(), this.resizedWidth, this.resizedHeight);
+        const coreImage: CoreImage = new CoreImage(grid, catalogName.charCodeAt(0), catalogName);
+
+        return coreImage;
     }
 
     private loadImage(file: string): Promise<SharpInstance> {
@@ -37,7 +54,7 @@ export class SimpleResizeExtractorService implements IFeatureExtractor {
         const height: number | undefined = (await image.metadata()).height;
         const grid: number[][] = this.toTwoDemenstionalArray(await image.raw().greyscale(true).toBuffer(), width ? width : 0, height ? height : 0);
         const coordiantes: Region = this.getCoordiatnes(grid, width ? width : 0, height ? height : 0);
-        const extractedImage: SharpInstance = image.extract(coordiantes).resize(32, 32);
+        const extractedImage: SharpInstance = image.extract(coordiantes).resize(this.resizedWidth, this.resizedHeight);
 
         return extractedImage;
     }

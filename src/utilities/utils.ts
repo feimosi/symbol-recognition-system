@@ -35,12 +35,8 @@ export class Utils {
 
     /** Saves content to file */
     public static saveToFile(path: string, content: any): void {
-        FileStream.writeFile(Path.resolve(__dirname, path), JSON.stringify(content), (err: NodeJS.ErrnoException) => {
-            if (err) {
-                return console.log(err);
-            }
-            console.log("The file was saved!");
-        });
+        FileStream.writeFileSync(Path.resolve(__dirname, path), JSON.stringify(content));
+        console.log("The file was saved!");
     }
 
     /** Loads content form file */

@@ -28,7 +28,8 @@
     "typescript": "^2.5.3"
   },
   "dependencies": {
-    "synaptic": "^1.1.3",
-    "sharp": "^0.18.4"
+    "ml-pca": "^2.1.0",
+    "sharp": "^0.18.4",
+    "synaptic": "^1.1.3"
   }
 }
