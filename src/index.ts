@@ -1,7 +1,6 @@
 import { Logger } from "./utilities/logger";
 import { ImageFeatures } from "./data-models/image-features";
 import { Utils } from "./utilities/utils";
-import { HogExtractorService } from "./services/hog-extractor-service";
 import { IFeatureExtractor } from "./services/ifeature-extractor";
 import { SimpleResizeExtractorService } from "./services/simple-resize-extractor-service";
 import { ClassificationService } from "./services/classification-service";
