@@ -9,5 +9,6 @@ export class ClassificationService {
         console.log(this.network.activate(images[0].features));
         console.log(this.network.propagate(0.3, [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
         console.log(this.network.activate(images[0].features));
+        console.log(this.network.activate(images[1].features));
     }
 }
