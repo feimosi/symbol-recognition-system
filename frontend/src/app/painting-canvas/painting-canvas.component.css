@@ -1,0 +1,8 @@
+:host {
+  display: block;
+}
+
+canvas {
+  cursor: crosshair;
+  border: 1px solid #000;
+}

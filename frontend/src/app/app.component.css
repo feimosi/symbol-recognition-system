@@ -1,0 +1,11 @@
+.app {
+  width: 1280px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.brushSizeSlider {
+  width: 400px;
+  margin-top: 2rem;
+  cursor: pointer;
+}

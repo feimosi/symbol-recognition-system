@@ -1,0 +1,28 @@
+<div class="app" style="text-align:center">
+  <h1>
+    Symbol recognition system
+  </h1>
+
+  <painting-canvas
+    *ngIf="clear$ && saveBlob$"
+    [brushSize]="brushSize"
+    [clear]="clear$"
+    [saveBlob]="saveBlob$"
+    (onBlobReady)="submitFile($event)"
+    >
+  </painting-canvas>
+  <input
+    [(ngModel)]="brushSize"
+    class="brushSizeSlider"
+    type="range"
+    name="brushSize"
+    min="5"
+    max="50"
+  >
+  <div>
+    Brush size: {{ brushSize }}
+  </div>
+
+  <button #clearButton>Clear</button>
+  <button #submitButton>Submit</button>
+</div>
