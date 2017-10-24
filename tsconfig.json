@@ -53,5 +53,9 @@
 
     /* Build options */
     "watch": false                             /* Enables compile on save when task build is running */
-  }
+  },
+  "exclude": [
+    "./backend",
+    "./frontend"
+  ]
 }

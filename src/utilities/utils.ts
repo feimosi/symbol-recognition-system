@@ -10,8 +10,10 @@ export class Utils {
 
     /** Read all files recursivly form directory */
     public static getFilesPaths(directoryPath: string, subDirectory?: string): string[] {
+        
         const resolvedPath: string = Path.resolve(__dirname, directoryPath, !subDirectory ? "" : subDirectory);
         let paths: string[] = new Array<string>();
+
         if (FileStream.statSync(resolvedPath).isDirectory()) {
             const list: string[] = FileStream.readdirSync(resolvedPath);
             for (const fileName of list) {
