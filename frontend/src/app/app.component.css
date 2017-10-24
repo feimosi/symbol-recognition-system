@@ -4,8 +4,28 @@
   margin: 0 auto;
 }
 
+.header {
+  margin-bottom: 2rem;
+}
+
+.header-title {
+  text-align: center;
+  width: 100%;
+}
+
 .brushSizeSlider {
   width: 400px;
   margin-top: 2rem;
   cursor: pointer;
+}
+
+.buttonsBar {
+  margin-top: 2rem;
+
+}
+
+.button {
+  min-width: 140px;
+  line-height: 50px;
+  font-size: 16px;
 }

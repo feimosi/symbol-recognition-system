@@ -1,7 +1,9 @@
 <div class="app" style="text-align:center">
-  <h1>
-    Symbol recognition system
-  </h1>
+  <mat-toolbar class="header" color="primary">
+    <h1 class="header-title">
+      Symbol recognition system
+    </h1>
+  </mat-toolbar>
 
   <painting-canvas
     *ngIf="clear$ && saveBlob$"
@@ -11,6 +13,7 @@
     (onBlobReady)="submitFile($event)"
     >
   </painting-canvas>
+
   <input
     [(ngModel)]="brushSize"
     class="brushSizeSlider"
@@ -19,10 +22,13 @@
     min="5"
     max="50"
   >
+
   <div>
     Brush size: {{ brushSize }}
   </div>
 
-  <button #clearButton>Clear</button>
-  <button #submitButton>Submit</button>
+  <div class="buttonsBar">
+    <button class="button" mat-raised-button #clearButton>Clear</button>
+    <button class="button" mat-raised-button color="primary" #submitButton>Submit</button>
+  </div>
 </div>

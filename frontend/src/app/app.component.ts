@@ -19,8 +19,8 @@ export class AppComponent implements OnInit {
   constructor(private imageUploadService: ImageUploadService) {}
 
   ngOnInit() {
-    this.clear$ = Observable.fromEvent(this.clearButton.nativeElement, 'click');
-    this.saveBlob$ = Observable.fromEvent(this.submitButton.nativeElement, 'click');
+    this.clear$ = Observable.fromEvent(this.clearButton._elementRef.nativeElement, 'click');
+    this.saveBlob$ = Observable.fromEvent(this.submitButton._elementRef.nativeElement, 'click');
   }
 
   submitFile(blob) {
