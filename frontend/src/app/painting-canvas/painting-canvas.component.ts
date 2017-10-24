@@ -24,7 +24,7 @@ import 'rxjs/add/operator/switchMap';
 })
 export class PaintingCanvasComponent implements OnInit, AfterViewInit, OnChanges {
 
-  @ViewChild('canvas') public canvas: ElementRef & { width, height };
+  @ViewChild('canvas') public canvas: ElementRef;
 
   @Input() public brushSize = 25;
   @Input() public width = 400;
