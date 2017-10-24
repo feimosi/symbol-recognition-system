@@ -3,4 +3,5 @@ import { CoreImage } from "../data-models/core-image";
 
 export interface IFeatureExtractor {
     extractFeatures(images: CoreImage[], featuresCount: number): Promise<ImageFeatures[]>;
+    extractFeaturesSingle(image: CoreImage, featuresCount: number): Promise<ImageFeatures>;
 }

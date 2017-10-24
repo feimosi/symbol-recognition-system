@@ -33,6 +33,13 @@ export class PCAFeatureExtractor implements IFeatureExtractor {
         });
     }
 
+    public extractFeaturesSingle(image: CoreImage, featuresCount: number): Promise<ImageFeatures> {
+        return new Promise<ImageFeatures>((resolve, error) => {
+            const features: number[] = this.pca.predict([[].concat.apply([], image.originalImage)])[0].splice(0, featuresCount);
+            resolve(new ImageFeatures(image.originalImage, image.label, image.name, features));
+        });
+    }
+
     private transformToFeatureArray(images: CoreImage[]): number[][] {
         const result: number[][] = [];
 
