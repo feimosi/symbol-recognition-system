@@ -14,14 +14,14 @@
     >
   </painting-canvas>
 
-  <input
+  <mat-slider
     [(ngModel)]="brushSize"
     class="brushSizeSlider"
-    type="range"
-    name="brushSize"
+    color="primary"
+    step="1"
     min="5"
     max="50"
-  >
+  ></mat-slider>
 
   <div>
     Brush size: {{ brushSize }}

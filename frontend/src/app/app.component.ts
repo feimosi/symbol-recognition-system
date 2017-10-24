@@ -9,7 +9,7 @@ import { ImageUploadService } from './image-upload.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  brushSize = 40;
+  brushSize = 30;
   clear$: Observable<any>;
   saveBlob$: Observable<any>;
 
