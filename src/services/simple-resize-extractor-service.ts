@@ -24,6 +24,7 @@ export class SimpleImageResizer {
                 result.push(await this.loadAndResizeImage(file));
                 Logger.log(`${file} - file converted to features. ${Math.round(((files.indexOf(file) + 1) / files.length) * 10000) / 100}% finished`);
             }
+            Utils.saveToFile(this.resizedImagesPath, result);
         }
 
         return result;
@@ -42,11 +43,6 @@ export class SimpleImageResizer {
         return new Promise((resolve, reject) => {
             resolve(sharp(file));
         });
-    }
-
-    private async extractFeatures(image: SharpInstance): Promise<number[]> {
-        const transformedImage = await this.transformImage(image);
-        return Array.from(await transformedImage.toBuffer());
     }
 
     private async transformImage(image: SharpInstance): Promise<SharpInstance> {
