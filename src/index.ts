@@ -12,9 +12,9 @@ async function main(): Promise<void> {
     const paths: string[] = Utils.getFilesPaths("../../data/training/Signs/Big/");
 
     const imageResizer: SimpleImageResizer = new SimpleImageResizer("../../data/resized-images.json");
-
     const images: CoreImage[] = await imageResizer.loadAndResizeImages(paths);
     const featureExtractor: IFeatureExtractor = new PCAFeatureExtractor("../../data/pca-data-model.json", images);
+    
     let features: ImageFeatures[];
 
     if (!Utils.fileExists(imagesWithFeaturesPath)) {
