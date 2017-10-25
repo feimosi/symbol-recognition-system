@@ -24,7 +24,7 @@ async function main(): Promise<void> {
         features = Utils.loadFromFile(imagesWithFeaturesPath);
     }
 
-    const classificator = new ClassificationService(features);
+    const classificator = new ClassificationService(features, "../../data/neural-network.json");
     console.log("Program successfully finished");
 }
 
