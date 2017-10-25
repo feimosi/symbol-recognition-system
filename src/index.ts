@@ -9,7 +9,7 @@ import { PCAFeatureExtractor } from "./services/pca-feature-extractor";
 
 async function main(): Promise<void> {
     const imagesWithFeaturesPath: string = "../../data/images-with-features.json";
-    const paths: string[] = Utils.getFilesPaths("../../data/training/Signs/Big/");
+    const paths: string[] = Utils.getFilesPaths("../../data/training/Signs/Big2/");
 
     const imageResizer: SimpleImageResizer = new SimpleImageResizer("../../data/resized-images.json");
     const images: CoreImage[] = await imageResizer.loadAndResizeImages(paths);

@@ -14,7 +14,7 @@ export class ClassificationService {
         if (Utils.fileExists(networkFilePath)) {
             this.network = Network.fromJSON(Utils.loadFromFile(networkFilePath));
         } else {
-            this.network = new Architect.Perceptron(120, 200, 26);
+            this.network = new Architect.Perceptron(26, 200, 26);
             this.learn(images);
             Utils.saveToFile(networkFilePath, this.network.toJSON());
         }
@@ -49,7 +49,7 @@ export class ClassificationService {
 
         for (let i = 0; i < size; i++) {
             const empty: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-            empty[i] = 100;
+            empty[i] = 1;
             this.labelDictionary[String.fromCharCode(65 + i)] = empty;
         }
     }
@@ -58,19 +58,18 @@ export class ClassificationService {
         if (Utils.fileExists("../../data/temporary-network.json")) {
             this.network = Network.fromJSON(Utils.loadFromFile("../../data/temporary-network.json"));
         }
-        const runsCount: number = 10000;
-        for (let i = 0; i < runsCount; i++) {
-
-            let errorCount: number = 0;
+        let successCount: number = 0;
+        while (successCount < 26) {
+            successCount = 0;
             for (const image of images) {
                 const output: number[] = this.network.activate(image.features);
                 if (String.fromCharCode(65 + this.indexOfMax(output)) !== image.name) {
-                    this.network.propagate(20, this.labelDictionary[image.name]);
-                    errorCount++;
+                    this.network.propagate(0.3, this.labelDictionary[image.name]);
+                    break;
                 }
+                successCount++;
             }
             Utils.saveToFile("../../data/temporary-network.json", this.network.toJSON());
-            console.log("Learning finished (" + errorCount + " errors) " + Math.round((i / runsCount) * 10000) / 100 + "%");
         }
         console.log("Neural network learning finished!");
     }
