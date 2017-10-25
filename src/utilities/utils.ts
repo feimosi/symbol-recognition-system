@@ -38,7 +38,6 @@ export class Utils {
     /** Saves content to file */
     public static saveToFile(path: string, content: any): void {
         FileStream.writeFileSync(Path.resolve(__dirname, path), JSON.stringify(content));
-        console.log("The file was saved!");
     }
 
     /** Loads content form file */

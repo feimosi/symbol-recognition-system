@@ -14,7 +14,7 @@ export class ClassificationService {
         if (Utils.fileExists(networkFilePath)) {
             this.network = Network.fromJSON(Utils.loadFromFile(networkFilePath));
         } else {
-            this.network = new Architect.Perceptron(26, 200, 26);
+            this.network = new Architect.Perceptron(120, 240, 26);
             this.learn(images);
             Utils.saveToFile(networkFilePath, this.network.toJSON());
         }
@@ -55,11 +55,16 @@ export class ClassificationService {
     }
 
     private learn(images: ImageFeatures[]): void {
+
         if (Utils.fileExists("../../data/temporary-network.json")) {
             this.network = Network.fromJSON(Utils.loadFromFile("../../data/temporary-network.json"));
         }
+
         let successCount: number = 0;
-        while (successCount < 26) {
+        let record: number = 0;
+
+        while (successCount < images.length) {
+
             successCount = 0;
             for (const image of images) {
                 const output: number[] = this.network.activate(image.features);
@@ -70,6 +75,11 @@ export class ClassificationService {
                 successCount++;
             }
             Utils.saveToFile("../../data/temporary-network.json", this.network.toJSON());
+
+            if (successCount > record) {
+                record = successCount;
+                console.log("Run succeded " + record);
+            }
         }
         console.log("Neural network learning finished!");
     }
