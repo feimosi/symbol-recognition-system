@@ -14,7 +14,7 @@ export class ClassificationService {
         if (Utils.fileExists(networkFilePath)) {
             this.network = Network.fromJSON(Utils.loadFromFile(networkFilePath));
         } else {
-            this.network = new Architect.Perceptron(120, 240, 26);
+            this.network = new Architect.Perceptron(400, 500, 26);
             this.learn(images);
             Utils.saveToFile(networkFilePath, this.network.toJSON());
         }
