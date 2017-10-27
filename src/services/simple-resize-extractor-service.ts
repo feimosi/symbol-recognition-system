@@ -1,5 +1,6 @@
 import { CoreImage } from "./../data-models/core-image";
 import * as sharp from "sharp";
+import { resolve as pathResolve } from "path";
 import { SharpInstance, OutputInfo, Region } from "sharp";
 import { Logger } from "../utilities/logger";
 import { Utils } from "../utilities/utils";
@@ -49,14 +50,15 @@ export class SimpleImageResizer {
         const width: number | undefined = (await image.metadata()).width;
         const height: number | undefined = (await image.metadata()).height;
 
+        fileName = fileName.split("/").pop() || "";
         const grid: number[][] = this.toTwoDemenstionalArray(await image.raw().greyscale(true).toBuffer(), width ? width : 0, height ? height : 0);
         const coordiantes: Region = this.getCoordiatnes(grid, width ? width : 0, height ? height : 0);
         const extractedImage: SharpInstance = image.extract(coordiantes).resize(this.resizedWidth, this.resizedHeight);
         const resizedFileName: string = "data/resized/" + fileName.split("\\").reverse()[0];
 
-        await extractedImage.toFile(resizedFileName);
-
-        return (await this.loadImage(resizedFileName)).raw().greyscale(true);
+        const absolutePath = pathResolve(__dirname, "..", "..", resizedFileName);
+        await extractedImage.toFile(absolutePath);
+        return (await this.loadImage(absolutePath)).raw().greyscale(true);
     }
 
     private toTwoDemenstionalArray(vector: Uint8Array, width: number, height: number): number[][] {

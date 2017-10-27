@@ -1,5 +1,13 @@
 import * as Hapi from "hapi";
 import * as fs from "fs";
+import * as Path from "path";
+import { CoreImage } from "../../src/data-models/core-image";
+import { Utils } from "../../src/utilities/utils";
+import { SimpleImageResizer } from "../../src/services/simple-resize-extractor-service";
+import { PCAFeatureExtractor } from "../../src/services/pca-feature-extractor";
+import { IFeatureExtractor } from "../../src//services/ifeature-extractor";
+import { ImageFeatures } from "../../src/data-models/image-features";
+import { ClassificationService } from "../../src/services/classification-service";
 
 export function init(config) {
     return new Promise<any>((resolve) => {
@@ -26,12 +34,23 @@ export function init(config) {
             method: "POST",
             path: "/submit",
             handler(request, reply) {
-                fs.writeFile(`${__dirname}/../uploads/test.png`, request.payload.image, {}, (err) => {
+                fs.writeFile(`${__dirname}/../uploads/test.png`, request.payload.image, {}, async (err) => {
                     if (err) {
                         console.error(err);
                         return;
                     }
-                    reply({ message: "Video saved!" });
+                    const imagesWithFeaturesPath: string = "../../data/images-with-features.json";
+
+                    const imageResizer: SimpleImageResizer = new SimpleImageResizer("");
+                    const filePath = Utils.getFilesPaths("../../backend/uploads/")[1];
+                    const image: CoreImage = await imageResizer.loadAndResizeImage(filePath);
+                    const featureExtractor: IFeatureExtractor = new PCAFeatureExtractor("../../data/pca-data-model.json", [image]);
+                    let features: ImageFeatures[];
+                    features = Utils.loadFromFile(imagesWithFeaturesPath);
+                    const classificator = new ClassificationService(features, "../../data/temporary-network.json");
+                    const result = classificator.classify(features[0]);
+                    console.log("Recognised as: ", result);
+                    reply({ message: "Video saved!", result });
                 });
             }
         });
