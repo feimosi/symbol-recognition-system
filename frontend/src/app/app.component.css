@@ -29,3 +29,12 @@
   line-height: 50px;
   font-size: 16px;
 }
+
+.result-card {
+  margin-top: 2rem;
+  font-size: 1.6rem;
+}
+
+.result {
+  font-weight: bold;
+}

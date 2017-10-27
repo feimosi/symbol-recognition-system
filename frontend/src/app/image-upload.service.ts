@@ -7,9 +7,9 @@ export class ImageUploadService {
     const formData = new FormData();
     formData.append('image', blob);
 
-    fetch('http://localhost:5080/submit', {
+    return fetch('http://localhost:5080/submit', {
       method: 'POST',
       body: formData,
-    });
+    }).then(result => result.json());
   }
 }

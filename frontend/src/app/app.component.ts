@@ -10,6 +10,7 @@ import { ImageUploadService } from './image-upload.service';
 })
 export class AppComponent implements OnInit {
   brushSize = 30;
+  result = null;
   clear$: Observable<any>;
   saveBlob$: Observable<any>;
 
@@ -24,6 +25,8 @@ export class AppComponent implements OnInit {
   }
 
   submitFile(blob) {
-    this.imageUploadService.submitImage(blob);
+    this.imageUploadService
+      .submitImage(blob)
+      .then(response => { this.result = response.result; });
   }
 }
