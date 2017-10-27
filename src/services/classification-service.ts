@@ -65,7 +65,7 @@ export class ClassificationService {
         let successCount: number = 1;
         let lastSuccessCount: number = 0;
         let record: number = 0;
-        // let learnRate: number = 0.1;
+        const learnRate: number = 0.1;
         // let increase: boolean = true;
 
         while (successCount < images.length) {
