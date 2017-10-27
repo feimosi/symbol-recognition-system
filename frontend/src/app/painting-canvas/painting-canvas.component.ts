@@ -66,6 +66,9 @@ export class PaintingCanvasComponent implements OnInit, AfterViewInit, OnChanges
     this.cx.lineCap = 'round';
     this.cx.strokeStyle = '#000';
 
+    this.cx.fillStyle = 'white';
+    this.cx.fillRect(0, 0, canvasEl.width, canvasEl.height);
+
     this.captureEvents(canvasEl);
   }
 
