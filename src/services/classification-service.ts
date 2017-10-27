@@ -66,7 +66,6 @@ export class ClassificationService {
         let lastSuccessCount: number = 0;
         let record: number = 0;
         const learnRate: number = 0.1;
-        // let increase: boolean = true;
 
         while (successCount < images.length) {
             successCount = 0;
@@ -81,16 +80,6 @@ export class ClassificationService {
             }
 
             Utils.saveToFile("../../data/temporary-network.json", this.network.toJSON());
-            // console.log("Run " + successCount + " succeeded (learn rate " + learnRate + ")");
-
-            // if (successCount > lastSuccessCount) {
-            //     increase = !increase;
-            // }
-            // if (increase) {
-            //     learnRate += 0.01;
-            // } else {
-            //     learnRate -= 0.01;
-            // }
 
             if (record < successCount) {
                 record = successCount;
