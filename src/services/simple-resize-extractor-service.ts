@@ -7,8 +7,8 @@ import { Utils } from "../utilities/utils";
 export class SimpleImageResizer {
 
     private readonly resizedImagesPath: string;
-    private resizedWidth: number = 32;
-    private resizedHeight: number = 32;
+    private resizedWidth: number = 20;
+    private resizedHeight: number = 20;
 
     public constructor(resizedImagesPath: string) {
         this.resizedImagesPath = resizedImagesPath;

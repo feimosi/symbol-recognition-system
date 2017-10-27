@@ -18,7 +18,7 @@ async function main(): Promise<void> {
     let features: ImageFeatures[];
 
     if (!Utils.fileExists(imagesWithFeaturesPath)) {
-        features = await featureExtractor.extractFeatures(images, 400);
+        features = await featureExtractor.extractFeatures(images, 200);
         Utils.saveToFile(imagesWithFeaturesPath, features);
     } else {
         features = Utils.loadFromFile(imagesWithFeaturesPath);
