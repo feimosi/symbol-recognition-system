@@ -39,16 +39,14 @@ export function init(config) {
                         console.error(err);
                         return;
                     }
-                    const imagesWithFeaturesPath: string = "../../data/images-with-features.json";
-
                     const imageResizer: SimpleImageResizer = new SimpleImageResizer("");
                     const filePath = Utils.getFilesPaths("../../backend/uploads/")[1];
                     const image: CoreImage = await imageResizer.loadAndResizeImage(filePath);
                     const featureExtractor: IFeatureExtractor = new PCAFeatureExtractor("../../data/pca-data-model.json", [image]);
-                    let features: ImageFeatures[];
-                    features = Utils.loadFromFile(imagesWithFeaturesPath);
-                    const classificator = new ClassificationService(features, "../../data/temporary-network.json");
-                    const result = classificator.classify(features[0]);
+                    const features = await featureExtractor.extractFeaturesSingle(image, 200);
+                    const classificator = new ClassificationService([features], "../../data/temporary-network-record.json");
+                    const result = classificator.classify(features);
+
                     console.log("Recognised as: ", result);
                     reply({ message: "Video saved!", result });
                 });

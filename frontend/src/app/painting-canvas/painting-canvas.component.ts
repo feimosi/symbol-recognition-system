@@ -38,6 +38,7 @@ export class PaintingCanvasComponent implements OnInit, AfterViewInit, OnChanges
   ngOnInit() {
     this.clear.subscribe(() => {
       this.cx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+      this.fillWithWhiteBg();
     });
 
     this.saveBlob.subscribe(() => {
@@ -66,10 +67,14 @@ export class PaintingCanvasComponent implements OnInit, AfterViewInit, OnChanges
     this.cx.lineCap = 'round';
     this.cx.strokeStyle = '#000';
 
-    this.cx.fillStyle = 'white';
-    this.cx.fillRect(0, 0, canvasEl.width, canvasEl.height);
+    this.fillWithWhiteBg();
 
     this.captureEvents(canvasEl);
+  }
+
+  private fillWithWhiteBg() {
+    this.cx.fillStyle = 'white';
+    this.cx.fillRect(0, 0, this.width, this.height);
   }
 
   private captureEvents(canvasEl: HTMLCanvasElement) {

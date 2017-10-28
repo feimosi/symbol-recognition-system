@@ -5,6 +5,8 @@ import { SharpInstance, OutputInfo, Region } from "sharp";
 import { Logger } from "../utilities/logger";
 import { Utils } from "../utilities/utils";
 
+sharp.cache(false);
+
 export class SimpleImageResizer {
 
     private readonly resizedImagesPath: string;
