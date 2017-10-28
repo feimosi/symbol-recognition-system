@@ -30,12 +30,18 @@
     <button class="button" mat-raised-button #clearButton>
       Clear
     </button>
-    <button class="button" mat-raised-button color="primary" #submitButton>
+    <button
+      class="button"
+       mat-raised-button
+       color="primary"
+       #submitButton
+       [disabled]="loadingResult"
+      >
       <span class="submit-button">
         <mat-spinner
           *ngIf="loadingResult"
           class="spinner"
-          color="accent"
+          color="primary"
           [diameter]="25"
           [strokeWidth]="4"
         ></mat-spinner>
