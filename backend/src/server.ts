@@ -53,6 +53,15 @@ export function init(config) {
             }
         });
 
+        server.route({
+            method: "POST",
+            path: "/correct",
+            handler(request, reply) {
+                console.log("Correct as: ", request.payload.shouldBe);
+                reply({ message: `Corrected as ${request.payload.shouldBe}` });
+            }
+        });
+
         resolve(server);
     });
 }

@@ -38,3 +38,7 @@
 .result {
   font-weight: bold;
 }
+
+.should-be-field {
+  font-size: 1rem;
+}

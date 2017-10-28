@@ -11,8 +11,7 @@
     [clear]="clear$"
     [saveBlob]="saveBlob$"
     (onBlobReady)="submitFile($event)"
-    >
-  </painting-canvas>
+  ></painting-canvas>
 
   <mat-slider
     [(ngModel)]="brushSize"
@@ -28,16 +27,38 @@
   </div>
 
   <div class="buttonsBar">
-    <button class="button" mat-raised-button #clearButton>Clear</button>
-    <button class="button" mat-raised-button color="primary" #submitButton>Submit</button>
+    <button class="button" mat-raised-button #clearButton>
+      Clear
+    </button>
+    <button class="button" mat-raised-button color="primary" #submitButton>
+      Submit
+    </button>
   </div>
 
-  <div *ngIf="result" class="result-card">
+  <div [hidden]="!result" class="result-card">
     <mat-card>
       Recognised as
       <span class="result">
         {{ result }}
       </span>
+      <div class="buttonsBar">
+        <mat-form-field class="should-be-field">
+          <input
+            [(ngModel)]="shouldBe"
+            matInput
+            placeholder="Should be"
+          />
+        </mat-form-field>
+        <button
+          class="button"
+          mat-raised-button
+          color="warn"
+          [disabled]="!shouldBe"
+          #correctButton
+        >
+          Correct
+        </button>
+      </div>
     </mat-card>
   </div>
 </div>
