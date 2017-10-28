@@ -2,6 +2,7 @@
   width: 1280px;
   max-width: 100%;
   margin: 0 auto;
+  position: relative;
 }
 
 .header {
@@ -11,6 +12,14 @@
 .header-title {
   text-align: center;
   width: 100%;
+}
+
+.previewImage {
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: scale(.5);
+  border: 1px solid gray;
 }
 
 .brushSizeSlider {

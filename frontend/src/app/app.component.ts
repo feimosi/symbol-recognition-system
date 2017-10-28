@@ -1,5 +1,7 @@
+import { Subject } from 'rxjs/Subject';
 import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/merge';
 import { EventEmitter } from 'events';
 import { ImageUploadService } from './image-upload.service';
 
@@ -14,17 +16,23 @@ export class AppComponent implements OnInit {
   clear$: Observable<any>;
   saveBlob$: Observable<any>;
   correct$: Observable<any>;
+  clearSubject$: Subject<any>;
   loadingResult = false;
   shouldBe = '';
 
   @ViewChild('clearButton') clearButton;
   @ViewChild('submitButton') submitButton;
   @ViewChild('correctButton') correctButton;
+  @ViewChild('previewImage') previewImage;
 
   constructor(private imageUploadService: ImageUploadService) {}
 
   ngOnInit() {
-    this.clear$ = Observable.fromEvent(this.clearButton._elementRef.nativeElement, 'click');
+    this.clearSubject$ = new Subject();
+    this.clear$ = Observable.merge(
+      Observable.fromEvent(this.clearButton._elementRef.nativeElement, 'click'),
+      this.clearSubject$
+    );
     this.saveBlob$ = Observable.fromEvent(this.submitButton._elementRef.nativeElement, 'click');
     this.correct$ = Observable.fromEvent(this.correctButton._elementRef.nativeElement, 'click');
 
@@ -33,7 +41,12 @@ export class AppComponent implements OnInit {
         .correctResult(this.shouldBe)
         .then(response => { this.result = null; });
     });
-}
+  }
+
+  displayPreview(dataUrl) {
+    this.clearSubject$.next();
+    this.previewImage.nativeElement.src = dataUrl;
+  }
 
   submitFile(blob) {
     this.loadingResult = true;

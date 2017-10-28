@@ -34,20 +34,17 @@ export function init(config) {
             method: "POST",
             path: "/submit",
             handler(request, reply) {
-                const dirname: string = Path.dirname(Path.resolve(`${__dirname}/../uploads/test.png`));
-                Utils.ensureDirectoryExistence(dirname);
-
-                fs.writeFile(`${dirname}/test.png`, request.payload.image, {}, async (err) => {
+                fs.writeFile(`${__dirname}/../uploads/test.png`, request.payload.image, {}, async (err) => {
                     if (err) {
                         console.error(err);
                         return;
                     }
                     const imageResizer: SimpleImageResizer = new SimpleImageResizer("");
-                    const filePath = Utils.getFilesPaths("../../backend/uploads/")[0];
+                    const filePath = Utils.getFilesPaths("../../backend/uploads/")[1];
                     const image: CoreImage = await imageResizer.loadAndResizeImage(filePath);
-                    const featureExtractor: IFeatureExtractor = new PCAFeatureExtractor("../../../../data/pca-data-model.json", [image]);
+                    const featureExtractor: IFeatureExtractor = new PCAFeatureExtractor("../../data/pca-data-model.json", [image]);
                     const features = await featureExtractor.extractFeaturesSingle(image, 200);
-                    const classificator = new ClassificationService([features], "../../../../data/neural-network.json");
+                    const classificator = new ClassificationService([features], "../../data/neural-network.json");
                     const result = classificator.classify(features);
 
                     console.log("Recognised as: ", result);

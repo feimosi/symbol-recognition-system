@@ -1,4 +1,4 @@
-<div class="app" style="text-align:center">
+<div class="app" style="text-align: center">
   <mat-toolbar class="header" color="primary">
     <h1 class="header-title">
       Symbol recognition system
@@ -10,16 +10,24 @@
     [brushSize]="brushSize"
     [clear]="clear$"
     [saveBlob]="saveBlob$"
+    (onDataUrlReady)="displayPreview($event)"
     (onBlobReady)="submitFile($event)"
   ></painting-canvas>
 
+  <img
+    class="previewImage"
+    src=""
+    alt=""
+    #previewImage
+  />
+
   <mat-slider
-    [(ngModel)]="brushSize"
     class="brushSizeSlider"
     color="primary"
-    step="1"
-    min="5"
-    max="50"
+    [step]="1"
+    [min]="5"
+    [max]="50"
+    [(ngModel)]="brushSize"
   ></mat-slider>
 
   <div>
@@ -27,16 +35,20 @@
   </div>
 
   <div class="buttonsBar">
-    <button class="button" mat-raised-button #clearButton>
+    <button
+      class="button"
+      mat-raised-button
+      #clearButton
+    >
       Clear
     </button>
     <button
       class="button"
-       mat-raised-button
-       color="primary"
-       #submitButton
-       [disabled]="loadingResult"
-      >
+      mat-raised-button
+      color="primary"
+      [disabled]="loadingResult"
+      #submitButton
+    >
       <span class="submit-button">
         <mat-spinner
           *ngIf="loadingResult"

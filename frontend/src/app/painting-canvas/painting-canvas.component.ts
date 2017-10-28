@@ -29,20 +29,27 @@ export class PaintingCanvasComponent implements OnInit, AfterViewInit, OnChanges
   @Input() public brushSize = 25;
   @Input() public width = 400;
   @Input() public height = 400;
+  @Input() public padding = 80;
   @Input() public clear: Observable<boolean>;
   @Input() public saveBlob: Observable<boolean>;
   @Output() public onBlobReady = new EventEmitter<any>();
+  @Output() public onDataUrlReady = new EventEmitter<any>();
 
   private cx: CanvasRenderingContext2D;
 
   ngOnInit() {
     this.clear.subscribe(() => {
       this.cx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-      this.fillWithWhiteBg();
+      this.fillWithWhiteBg(this.cx);
     });
 
     this.saveBlob.subscribe(() => {
-      this.canvas.nativeElement.toBlob((blob) => {
+      const context = this.getImageWithPadding(this.cx);
+      const offscreenCanvas = context.canvas;
+      const dataUrl = offscreenCanvas.toDataURL();
+      this.onDataUrlReady.emit(dataUrl);
+
+      offscreenCanvas.toBlob((blob) => {
         this.onBlobReady.emit(blob);
       });
     });
@@ -67,14 +74,13 @@ export class PaintingCanvasComponent implements OnInit, AfterViewInit, OnChanges
     this.cx.lineCap = 'round';
     this.cx.strokeStyle = '#000';
 
-    this.fillWithWhiteBg();
-
+    this.fillWithWhiteBg(this.cx);
     this.captureEvents(canvasEl);
   }
 
-  private fillWithWhiteBg() {
-    this.cx.fillStyle = 'white';
-    this.cx.fillRect(0, 0, this.width, this.height);
+  private fillWithWhiteBg(context: CanvasRenderingContext2D) {
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, context.canvas.width, context.canvas.height);
   }
 
   private captureEvents(canvasEl: HTMLCanvasElement) {
@@ -103,6 +109,22 @@ export class PaintingCanvasComponent implements OnInit, AfterViewInit, OnChanges
       });
   }
 
+  private getImageWithPadding(originalCotext): CanvasRenderingContext2D {
+    const finalWidth = this.width + this.padding;
+    const finalHheight = this.height + this.padding;
+    const offscreenCanvas = document.createElement('canvas');
+    offscreenCanvas.width = finalWidth;
+    offscreenCanvas.height = finalHheight;
+
+    const context = offscreenCanvas.getContext('2d');
+    this.fillWithWhiteBg(context);
+
+    const image = originalCotext.getImageData(0, 0, finalWidth, finalHheight);
+    context.putImageData(image, this.padding / 2, this.padding / 2, 0, 0, this.width, this.height);
+
+    return context;
+  }
+
   private drawOnCanvas(prevPos: { x: number, y: number }, currentPos: { x: number, y: number }) {
     if (!this.cx) { return; }
 
@@ -114,5 +136,4 @@ export class PaintingCanvasComponent implements OnInit, AfterViewInit, OnChanges
       this.cx.stroke();
     }
   }
-
 }
