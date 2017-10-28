@@ -1,17 +1,63 @@
 {
-        "version": "0.2.0",
-        "configurations": [
-            {
-                "type": "node",
-                "request": "launch",
-                "name": "DEBUG",
-                "program": "${workspaceRoot}\\src\\index.ts",
-                "outFiles": [
-                    "${workspaceRoot}/out/**/*.js"
-                ],
-                "sourceMaps": true,
-                "protocol": "inspector",
-                "preLaunchTask": "compile"
-            }
-        ]
-    }
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "DEBUG Frontend - webpack",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "start"
+            ],
+            "cwd": "${workspaceFolder}\\frontend",
+            "outputCapture": "std",
+            "console": "integratedTerminal",
+            "timeout": 10000000000000000000,
+            "showAsyncStacks": false
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "DEBUG Frontend - chrome",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceRoot}\\frontend",
+            "showAsyncStacks": false
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "DEBUG Backend",
+            "program": "${workspaceRoot}\\backend\\src\\index.ts",
+            "outFiles": [
+                "${workspaceRoot}/backend/out/**/*.js"
+            ],
+            "sourceMaps": true,
+            "protocol": "inspector",
+            "preLaunchTask": "compile-server",
+            "showAsyncStacks": false
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "DEBUG Console",
+            "program": "${workspaceRoot}\\src\\index.ts",
+            "outFiles": [
+                "${workspaceRoot}/out/**/*.js"
+            ],
+            "sourceMaps": true,
+            "protocol": "inspector",
+            "preLaunchTask": "compile",
+            "showAsyncStacks": false
+        }
+    ],
+    "compounds": [
+        {
+            "name": "DEBUG Frontend",
+            "configurations": ["DEBUG Frontend - chrome", "DEBUG Frontend - webpack"]
+        },
+        {
+            "name": "DEBUG ALL",
+            "configurations": ["DEBUG Frontend", "DEBUG Backend"]
+        }
+    ]
+}

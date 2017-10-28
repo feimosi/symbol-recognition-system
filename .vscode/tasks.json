@@ -11,6 +11,14 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "taskName": "compile-server",
+            "type": "shell",
+            "command": "tsc -p ${workspaceRoot}\\backend",
+            "problemMatcher": [
+                "$tsc"
+            ]
         }
     ]
 }

@@ -10,7 +10,7 @@ export class Utils {
 
     /** Read all files recursivly form directory */
     public static getFilesPaths(directoryPath: string, subDirectory?: string): string[] {
-        
+
         const resolvedPath: string = Path.resolve(__dirname, directoryPath, !subDirectory ? "" : subDirectory);
         let paths: string[] = new Array<string>();
 
@@ -48,5 +48,13 @@ export class Utils {
     /** Checks if file exists */
     public static fileExists(path: string): boolean {
         return FileStream.existsSync(Path.resolve(__dirname, path));
+    }
+
+    public static ensureDirectoryExistence(dirname: string): void {
+        if (FileStream.existsSync(dirname)) {
+            return;
+        }
+        this.ensureDirectoryExistence(Path.dirname(dirname));
+        FileStream.mkdirSync(dirname);
     }
 }

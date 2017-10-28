@@ -4,6 +4,7 @@ import { resolve as pathResolve } from "path";
 import { SharpInstance, OutputInfo, Region } from "sharp";
 import { Logger } from "../utilities/logger";
 import { Utils } from "../utilities/utils";
+import * as Path from "path";
 
 sharp.cache(false);
 
@@ -59,6 +60,7 @@ export class SimpleImageResizer {
         const resizedFileName: string = "data/resized/" + fileName.split("\\").reverse()[0];
 
         const absolutePath = pathResolve(__dirname, "..", "..", resizedFileName);
+        Utils.ensureDirectoryExistence(Path.dirname(absolutePath));
         await extractedImage.toFile(absolutePath);
         return (await this.loadImage(absolutePath)).raw().greyscale(true);
     }
