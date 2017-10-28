@@ -44,7 +44,7 @@ export function init(config) {
                     const image: CoreImage = await imageResizer.loadAndResizeImage(filePath);
                     const featureExtractor: IFeatureExtractor = new PCAFeatureExtractor("../../data/pca-data-model.json", [image]);
                     const features = await featureExtractor.extractFeaturesSingle(image, 200);
-                    const classificator = new ClassificationService([features], "../../data/temporary-network-record.json");
+                    const classificator = new ClassificationService([features], "../../data/neural-network.json");
                     const result = classificator.classify(features);
 
                     console.log("Recognised as: ", result);
