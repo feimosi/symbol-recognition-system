@@ -31,7 +31,16 @@
       Clear
     </button>
     <button class="button" mat-raised-button color="primary" #submitButton>
-      Submit
+      <span class="submit-button">
+        <mat-spinner
+          *ngIf="loadingResult"
+          class="spinner"
+          color="accent"
+          [diameter]="25"
+          [strokeWidth]="4"
+        ></mat-spinner>
+        Submit
+      </span>
     </button>
   </div>
 

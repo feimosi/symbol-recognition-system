@@ -6,7 +6,7 @@ import { ImageUploadService } from './image-upload.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   brushSize = 30;
@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   clear$: Observable<any>;
   saveBlob$: Observable<any>;
   correct$: Observable<any>;
+  loadingResult = false;
   shouldBe = '';
 
   @ViewChild('clearButton') clearButton;
@@ -35,8 +36,13 @@ export class AppComponent implements OnInit {
 }
 
   submitFile(blob) {
+    this.loadingResult = true;
     this.imageUploadService
       .submitImage(blob)
-      .then(response => { this.result = response.result; });
+      .then(response => {
+        this.loadingResult = false;
+        this.result = response.result;
+      })
+      .catch(() => { this.loadingResult = false; });
   }
 }

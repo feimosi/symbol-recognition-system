@@ -42,3 +42,14 @@
 .should-be-field {
   font-size: 1rem;
 }
+
+.submit-button {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.submit-button mat-spinner {
+  margin-right: 20px;
+}
