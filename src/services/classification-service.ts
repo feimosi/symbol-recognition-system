@@ -1,5 +1,5 @@
 import { Utils } from "./../utilities/utils";
-import { Network, Architect } from "synaptic";
+import { Network, Architect, Trainer } from "synaptic";
 import { ImageFeatures } from "../data-models/image-features";
 
 export class ClassificationService {
@@ -56,39 +56,35 @@ export class ClassificationService {
 
     private learn(images: ImageFeatures[]): void {
 
-        images = this.orderImages(images);
+        const path: string = "../../data/temporary-network.json";
 
-        if (Utils.fileExists("../../data/temporary-network.json")) {
-            this.network = Network.fromJSON(Utils.loadFromFile("../../data/temporary-network.json"));
+        if (Utils.fileExists(path)) {
+            this.network = Network.fromJSON(Utils.loadFromFile(path));
         }
 
-        let successCount: number = 1;
-        let lastSuccessCount: number = 0;
-        let record: number = 0;
-        const learnRate: number = 0.1;
+        const networkTrainer: Trainer = new Trainer(this.network);
+        const trainingSet: Trainer.TrainingPair[] = [];
 
-        while (successCount < images.length) {
-            successCount = 0;
+        images.forEach((image: ImageFeatures) => {
+            trainingSet.push({
+                input: image.features,
+                output: this.labelDictionary[image.name]
+            });
+        });
 
-            for (const image of images) {
-                const output: number[] = this.network.activate(image.features);
-                if (String.fromCharCode(65 + this.indexOfMax(output)) !== image.name) {
-                    this.network.propagate(learnRate, this.labelDictionary[image.name]);
-                    break;
-                }
-                successCount++;
-            }
+        networkTrainer.train(trainingSet, {
+            cost: Trainer.cost.CROSS_ENTROPY,
+            error: .01,
+            iterations: 20000,
+            log: 1,
+            rate: (iteration: number, error: number) => {
+                const rate: number = 0.3 - ((iteration - 1) * 0.001);
+                return rate < 0.006 ? 0.006 : rate;
+            },
+            shuffle: true,
+        });
 
-            Utils.saveToFile("../../data/temporary-network.json", this.network.toJSON());
-
-            if (record < successCount) {
-                record = successCount;
-                Utils.saveToFile("../../data/temporary-network-record.json", this.network.toJSON());
-                console.log("Run " + successCount + " succeeded (learn rate " + learnRate + ")");
-            }
-
-            lastSuccessCount = successCount;
-        }
+        Utils.saveToFile(path, this.network.toJSON());
         console.log("Neural network learning finished!");
     }
 
