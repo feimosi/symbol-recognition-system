@@ -14,9 +14,10 @@ export class AppComponent implements OnInit {
   brushSize = 30;
   result = null;
   clear$: Observable<any>;
-  saveBlob$: Observable<any>;
-  correct$: Observable<any>;
   clearSubject$: Subject<any>;
+  saveBlob$: Observable<any>;
+  saveBlobSubject$: Subject<any>;
+  correct$: Observable<any>;
   loadingResult = false;
   shouldBe = '';
 
@@ -31,9 +32,13 @@ export class AppComponent implements OnInit {
     this.clearSubject$ = new Subject();
     this.clear$ = Observable.merge(
       Observable.fromEvent(this.clearButton._elementRef.nativeElement, 'click'),
-      this.clearSubject$
+      this.clearSubject$,
     );
-    this.saveBlob$ = Observable.fromEvent(this.submitButton._elementRef.nativeElement, 'click');
+    this.saveBlobSubject$ = new Subject();
+    this.saveBlob$ = Observable.merge(
+      Observable.fromEvent(this.submitButton._elementRef.nativeElement, 'click'),
+      this.saveBlobSubject$,
+    );
     this.correct$ = Observable.fromEvent(this.correctButton._elementRef.nativeElement, 'click');
 
     this.correct$.subscribe(() => {
@@ -41,6 +46,14 @@ export class AppComponent implements OnInit {
         .correctResult(this.shouldBe)
         .then(response => { this.result = null; });
     });
+
+    Observable
+      .fromEvent(document, 'keypress')
+      .subscribe((event: KeyboardEvent) => {
+        if (event.code === 'Enter') {
+          this.saveBlobSubject$.next();
+        }
+      });
   }
 
   displayPreview(dataUrl) {
