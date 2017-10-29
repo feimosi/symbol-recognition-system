@@ -6,14 +6,15 @@ import { IFeatureExtractor } from "./services/ifeature-extractor";
 import { SimpleImageResizer } from "./services/simple-resize-extractor-service";
 import { ClassificationService } from "./services/classification-service";
 import { PCAFeatureExtractor } from "./services/pca-feature-extractor";
+import { resolvePath } from "./services/path-resolver";
 
 async function main(): Promise<void> {
-    const imagesWithFeaturesPath: string = "../../data/images-with-features.json";
-    const paths: string[] = Utils.getFilesPaths("../../data/training/Signs/Big/");
+    const imagesWithFeaturesPath: string = resolvePath("data", "images-with-features.json");
+    const paths: string[] = Utils.getFilesPaths(resolvePath("data", "training/Signs/Big"));
 
-    const imageResizer: SimpleImageResizer = new SimpleImageResizer("../../data/resized-images.json");
+    const imageResizer: SimpleImageResizer = new SimpleImageResizer(resolvePath("data", "resized-images.json"));
     const images: CoreImage[] = await imageResizer.loadAndResizeImages(paths);
-    const featureExtractor: IFeatureExtractor = new PCAFeatureExtractor("../../data/pca-data-model.json", images);
+    const featureExtractor: IFeatureExtractor = new PCAFeatureExtractor(resolvePath("data", "pca-data-model.json"), images);
 
     let features: ImageFeatures[];
 
@@ -24,7 +25,7 @@ async function main(): Promise<void> {
         features = Utils.loadFromFile(imagesWithFeaturesPath);
     }
 
-    const classificator = new ClassificationService(features, "../../data/neural-network.json");
+    const classificator = new ClassificationService(features, resolvePath("data", "neural-network.json"));
     console.log("Program successfully finished");
 }
 
