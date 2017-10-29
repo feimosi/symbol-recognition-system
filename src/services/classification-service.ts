@@ -72,14 +72,16 @@ export class ClassificationService {
             });
         });
 
+        const lastError: number = 0; 
+
         networkTrainer.train(trainingSet, {
             cost: Trainer.cost.CROSS_ENTROPY,
-            error: .01,
+            error: .005,
             iterations: 20000,
             log: 1,
             rate: (iteration: number, error: number) => {
-                const rate: number = 0.3 - ((iteration - 1) * 0.001);
-                return rate < 0.006 ? 0.006 : rate;
+                const rate: number = 0.3 - ((iteration - 1) * 0.005);
+                return rate < 0.005 ? 0.005 : rate;
             },
             shuffle: true,
         });
