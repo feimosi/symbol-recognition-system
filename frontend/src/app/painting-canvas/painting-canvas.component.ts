@@ -29,7 +29,7 @@ export class PaintingCanvasComponent implements OnInit, AfterViewInit, OnChanges
   @Input() public brushSize = 25;
   @Input() public width = 400;
   @Input() public height = 400;
-  @Input() public padding = 80;
+  @Input() public padding = 160;
   @Input() public clear: Observable<boolean>;
   @Input() public saveBlob: Observable<boolean>;
   @Output() public onBlobReady = new EventEmitter<any>();
